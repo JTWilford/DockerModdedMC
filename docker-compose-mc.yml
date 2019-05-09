@@ -1,0 +1,32 @@
+version: '3.5'
+services:
+  server:
+    image: jwilford/modded-mc
+    volumes:
+      - minecraft:/var/lib/minecraft/
+    ports:
+      - 25565:25565
+    networks:
+      - proxy
+    stdin_open: true
+    tty: true
+    environment:
+      - SERVER_FILES_URL=https://media.forgecdn.net/files/2706/808/SkyFactory_4_Server_4.0.5.zip
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+    secrets:
+      - server.properties
+      
+networks:
+  proxy:
+    external: true
+volumes:
+  minecraft:
+    external: true
+    
+secrets:
+  server.properties:
+    external: true
